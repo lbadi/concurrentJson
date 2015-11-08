@@ -270,6 +270,21 @@ public class Movie implements DataSerializable {
 		}
 	}
 
+	public int getYearAsInteger() {
+		try {
+			return Integer.valueOf(Year);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+
+	public int getMetascoreAsInteger() {
+		try {
+			return Integer.valueOf(Metascore);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
 
 	@Override
 	public String toString() {
