@@ -1,8 +1,7 @@
 package com.hufflepuff.front;
 
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
@@ -14,17 +13,18 @@ import com.hazelcast.client.config.ClientNetworkConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.core.IMap;
-import com.hazelcast.mapreduce.Job;
-import com.hazelcast.mapreduce.JobTracker;
-import com.hazelcast.mapreduce.KeyValueSource;
+import com.hazelcast.mapreduce.*;
 import com.hufflepuff.FileReader;
+import com.hufflepuff.back.MapperQ1;
+import com.hufflepuff.back.ReducerQ1;
 import com.hufflepuff.domain.Movie;
+import com.hufflepuff.util.Timestamper;
 
 public class Client {
 
 	private static final String MAP_NAME = "imdb";
 
-
+	private static final int QUERY_1 = 1;
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException 
 	{
@@ -74,34 +74,60 @@ public class Client {
 		}
 //
 //	    
-//	 	// Ahora el JobTracker y los Workers!
-//	    JobTracker tracker = client.getJobTracker("default");
-//	
-//	    // Ahora el Job desde los pares(key, Value) que precisa MapReduce
-//	    KeyValueSource<String, Movie> source = KeyValueSource.fromMap(myMap);
-//	    Job<String, Movie> job = tracker.newJob(source);
-//	
-////	    // Orquestacion de Jobs y lanzamiento
-//	    ICompletableFuture<Map<String, FormulaTupla>> future = job 
-//	            .mapper(new Mapper_5()) 
-//	            .reducer(new Reducer_5())
-//	            .submit(); 
-//	    
-//	    // Tomar resultado e Imprimirlo
-//	    Map<String, FormulaTupla> rta = future.get();
-//	
-//	    for (Entry<String, FormulaTupla> e : rta.entrySet()) 
-//	    {
-//	    	System.out.println(String.format("Distrito %s => Ganador %s",
-//	    			e.getKey(), e.getValue() ));
-//		}
-//	    
-//	    
-//	    System.exit(0);
+	 	// Ahora el JobTracker y los Workers!
+	    JobTracker tracker = client.getJobTracker("default");
+
+	    // Ahora el Job desde los pares(key, Value) que precisa MapReduce
+	    KeyValueSource<String, Movie> source = KeyValueSource.fromMap(myMap);
+	    Job<String, Movie> job = tracker.newJob(source);
+
+		if(data.query == QUERY_1) {
+			// Orquestacion de Jobs y lanzamiento
+			System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
+			ICompletableFuture<Map<String, Long>> future = job
+					.mapper(new MapperQ1())
+					.reducer(new ReducerQ1())
+					.submit();
+
+			// Tomar resultado e Imprimirlo
+			Map<String, Long> rta = future.get();
+
+			VotesComparator votesComparator = new VotesComparator(rta);
+			TreeMap<String, Long> sortedMap = new TreeMap<>(votesComparator);
+			sortedMap.putAll(rta);
+
+			int count = 0;
+			for (Entry<String, Long> e : sortedMap.entrySet()) {
+				if(count++ == data.n)
+					break;
+				System.out.println("El actor " + e.getKey() + " tiene " + e.getValue() + " votos.");
+			}
+			System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
+		}
+	    System.exit(0);
 
 	}
 
+	private static class VotesComparator implements Comparator<String> {
+
+		private Map<String, Long> map;
+
+		public VotesComparator(Map<String, Long> map) {
+			this.map = map;
+		}
+
+		@Override
+		public int compare(String k1, String k2) {
+			if (map.get(k1) >= map.get(k2)) {
+				return -1;
+			} else {
+				return 1;
+			} // returning 0 would merge keys
+		}
+	}
+
 	private static QueryData parseArgs(String[] args) {
+		int query = -1;
 		int n = -1;
 		int tope = -1;
 		String path = null;
@@ -109,7 +135,9 @@ public class Client {
 			String[] argSplitted = arg.split("=");
 			String argName = argSplitted[0].toLowerCase();
 			String argValue = argSplitted[1];
-			if(argName.equals("n")) {
+			if(argName.equals("query")) {
+				query = Integer.parseInt(argValue);
+			} else if(argName.equals("n")) {
 				n = Integer.parseInt(argValue);
 			} else if(argName.equals("tope")) {
 				tope = Integer.parseInt(argValue);
@@ -117,18 +145,20 @@ public class Client {
 				path = argValue;
 			}
 		}
-		return new QueryData(n, tope, path);
+		return new QueryData(query, n, tope, path);
 	}
 
 	private static class QueryData {
+		int query;
 		int n;
 		int tope;
 		String path;
 
-		public QueryData(int n, int tope, String path) {
+		public QueryData(int query, int n, int tope, String path) {
 			this.n = n;
 			this.tope = tope;
 			this.path = path;
+			this.query = query;
 		}
 	}
 }
