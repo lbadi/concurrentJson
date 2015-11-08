@@ -1,7 +1,7 @@
 package com.hufflepuff;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.hufflepuff.domain.Movie;
@@ -24,7 +24,7 @@ public class App
         FileReader fileReader = new FileReader();
         String file = fileReader.read("/home/leo/workspace/PODTpe/concurrentJson/resources/imdb-200.json");
         System.out.println(file);
-//        Movie m = gson.fromJson(json, classOfT)
+        List<Movie> m = gson.fromJson(file,List.class);
         System.out.println(gson.toJson(movies));
     }
 }
