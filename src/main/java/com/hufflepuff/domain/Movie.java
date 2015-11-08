@@ -2,25 +2,25 @@ package com.hufflepuff.domain;
 
 public class Movie {
 
-	String title;
-	String year;
-	String rated;
-	String released;
-	String runtime;
-	String genre;
-	String director;
-	String writer;
-	String actors;
-	String plot;
-	String languaje;
-	String country;
-	String awards;
-	String poster;
-	String metascore;
+	String Title;
+	String Year;
+	String Rated;
+	String Released;
+	String Runtime;
+	String Genre;
+	String Director;
+	String Writer;
+	String Actors;
+	String Plot;
+	String Language;
+	String Country;
+	String Awards;
+	String Poster;
+	String Metascore;
 	String imdbRating;
 	String imdbVotes;
 	String imdbID;
-	String type;
+	String Type;
 	String tomatoMeter;
 	String tomatoImage;
 	String tomatoRating;
@@ -31,49 +31,237 @@ public class Movie {
 	String tomatoUserMeter;
 	String tomatoUserRating;
 	String tomatoUserReviews;
-	String dvd;
-	String boxOffice;
-	String production;
-	String website;
-	String response;
-	
-	
-	
+	String DVD;
+	String BoxOffice;
+	String Production;
+	String Website;
+	String Response;
 	public String getTitle() {
-		return title;
+		return Title;
 	}
-	public String getRated() {
-		return rated;
-	}
-	public String getReleased() {
-		return released;
-	}
-	public String getRuntime() {
-		return runtime;
+	public void setTitle(String title) {
+		Title = title;
 	}
 	public String getYear() {
-		return year;
+		return Year;
 	}
-	public Movie setRated(String rated) {
-		this.rated = rated;
-		return this;
+	public void setYear(String year) {
+		Year = year;
 	}
-	public Movie setReleased(String released) {
-		this.released = released;
-		return this;
+	public String getRated() {
+		return Rated;
 	}
-	public Movie setRuntime(String runtime) {
-		this.runtime = runtime;
-		return this;
+	public void setRated(String rated) {
+		Rated = rated;
 	}
-	public Movie setTitle(String title) {
-		this.title = title;
-		return this;
+	public String getReleased() {
+		return Released;
 	}
-	public Movie setYear(String year) {
-		this.year = year;
-		return this;
+	public void setReleased(String released) {
+		Released = released;
 	}
+	public String getRuntime() {
+		return Runtime;
+	}
+	public void setRuntime(String runtime) {
+		Runtime = runtime;
+	}
+	public String getGenre() {
+		return Genre;
+	}
+	public void setGenre(String genre) {
+		Genre = genre;
+	}
+	public String getDirector() {
+		return Director;
+	}
+	public void setDirector(String director) {
+		Director = director;
+	}
+	public String getWriter() {
+		return Writer;
+	}
+	public void setWriter(String writer) {
+		Writer = writer;
+	}
+	public String getActors() {
+		return Actors;
+	}
+	public void setActors(String actors) {
+		Actors = actors;
+	}
+	public String getPlot() {
+		return Plot;
+	}
+	public void setPlot(String plot) {
+		Plot = plot;
+	}
+	public String getLanguage() {
+		return Language;
+	}
+	public void setLanguage(String languaje) {
+		Language = languaje;
+	}
+	public String getCountry() {
+		return Country;
+	}
+	public void setCountry(String country) {
+		Country = country;
+	}
+	public String getAwards() {
+		return Awards;
+	}
+	public void setAwards(String awards) {
+		Awards = awards;
+	}
+	public String getPoster() {
+		return Poster;
+	}
+	public void setPoster(String poster) {
+		Poster = poster;
+	}
+	public String getMetascore() {
+		return Metascore;
+	}
+	public void setMetascore(String metascore) {
+		Metascore = metascore;
+	}
+	public String getImdbRating() {
+		return imdbRating;
+	}
+	public void setImdbRating(String imdbRating) {
+		this.imdbRating = imdbRating;
+	}
+	public String getImdbVotes() {
+		return imdbVotes;
+	}
+	public void setImdbVotes(String imdbVotes) {
+		this.imdbVotes = imdbVotes;
+	}
+	public String getImdbID() {
+		return imdbID;
+	}
+	public void setImdbID(String imdbID) {
+		this.imdbID = imdbID;
+	}
+	public String getType() {
+		return Type;
+	}
+	public void setType(String type) {
+		Type = type;
+	}
+	public String getTomatoMeter() {
+		return tomatoMeter;
+	}
+	public void setTomatoMeter(String tomatoMeter) {
+		this.tomatoMeter = tomatoMeter;
+	}
+	public String getTomatoImage() {
+		return tomatoImage;
+	}
+	public void setTomatoImage(String tomatoImage) {
+		this.tomatoImage = tomatoImage;
+	}
+	public String getTomatoRating() {
+		return tomatoRating;
+	}
+	public void setTomatoRating(String tomatoRating) {
+		this.tomatoRating = tomatoRating;
+	}
+	public String getTomatoReviews() {
+		return tomatoReviews;
+	}
+	public void setTomatoReviews(String tomatoReviews) {
+		this.tomatoReviews = tomatoReviews;
+	}
+	public String getTomatoFresh() {
+		return tomatoFresh;
+	}
+	public void setTomatoFresh(String tomatoFresh) {
+		this.tomatoFresh = tomatoFresh;
+	}
+	public String getTomatoRotten() {
+		return tomatoRotten;
+	}
+	public void setTomatoRotten(String tomatoRotten) {
+		this.tomatoRotten = tomatoRotten;
+	}
+	public String getTomatoConsensus() {
+		return tomatoConsensus;
+	}
+	public void setTomatoConsensus(String tomatoConsensus) {
+		this.tomatoConsensus = tomatoConsensus;
+	}
+	public String getTomatoUserMeter() {
+		return tomatoUserMeter;
+	}
+	public void setTomatoUserMeter(String tomatoUserMeter) {
+		this.tomatoUserMeter = tomatoUserMeter;
+	}
+	public String getTomatoUserRating() {
+		return tomatoUserRating;
+	}
+	public void setTomatoUserRating(String tomatoUserRating) {
+		this.tomatoUserRating = tomatoUserRating;
+	}
+	public String getTomatoUserReviews() {
+		return tomatoUserReviews;
+	}
+	public void setTomatoUserReviews(String tomatoUserReviews) {
+		this.tomatoUserReviews = tomatoUserReviews;
+	}
+	public String getDVD() {
+		return DVD;
+	}
+	public void setDVD(String dVD) {
+		DVD = dVD;
+	}
+	public String getBoxOffice() {
+		return BoxOffice;
+	}
+	public void setBoxOffice(String boxOffice) {
+		BoxOffice = boxOffice;
+	}
+	public String getProduction() {
+		return Production;
+	}
+	public void setProduction(String production) {
+		Production = production;
+	}
+	public String getWebsite() {
+		return Website;
+	}
+	public void setWebsite(String website) {
+		Website = website;
+	}
+	public String getResponse() {
+		return Response;
+	}
+	public void setResponse(String response) {
+		Response = response;
+	}
+	@Override
+	public String toString() {
+		return "Movie [Title=" + Title + ", Year=" + Year + ", Rated=" + Rated
+				+ ", Released=" + Released + ", Runtime=" + Runtime
+				+ ", Genre=" + Genre + ", Director=" + Director + ", Writer="
+				+ Writer + ", Actors=" + Actors + ", Plot=" + Plot
+				+ ", Language=" + Language + ", Country=" + Country
+				+ ", Awards=" + Awards + ", Poster=" + Poster + ", Metascore="
+				+ Metascore + ", imdbRating=" + imdbRating + ", imdbVotes="
+				+ imdbVotes + ", imdbID=" + imdbID + ", Type=" + Type
+				+ ", tomatoMeter=" + tomatoMeter + ", tomatoImage="
+				+ tomatoImage + ", tomatoRating=" + tomatoRating
+				+ ", tomatoReviews=" + tomatoReviews + ", tomatoFresh="
+				+ tomatoFresh + ", tomatoRotten=" + tomatoRotten
+				+ ", tomatoConsensus=" + tomatoConsensus + ", tomatoUserMeter="
+				+ tomatoUserMeter + ", tomatoUserRating=" + tomatoUserRating
+				+ ", tomatoUserReviews=" + tomatoUserReviews + ", DVD=" + DVD
+				+ ", BoxOffice=" + BoxOffice + ", Production=" + Production
+				+ ", Website=" + Website + ", Response=" + Response + "]";
+	}
+	
+	
 }
 
 

@@ -47,7 +47,12 @@
 	<dependency>
 		<groupId>com.hazelcast</groupId>
 		<artifactId>hazelcast</artifactId>
-		<version>3.5.2</version>
+		<version>3.5.3</version>
+	</dependency>
+	<dependency>
+		<groupId>com.hazelcast</groupId>
+		<artifactId>hazelcast-client</artifactId>
+		<version>3.5.3</version>
 	</dependency>
   </dependencies>
 </project>

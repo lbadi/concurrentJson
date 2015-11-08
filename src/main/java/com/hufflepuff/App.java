@@ -1,9 +1,11 @@
 package com.hufflepuff;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hufflepuff.domain.Movie;
 
 /**
@@ -14,18 +16,20 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-        Movie movie = new Movie();
-        movie.setRated("rated").setReleased("released").setRuntime("runtime").setTitle("Titutlo").setYear("2000");
+    	QueryData data = parseArgs(args);
+//        Movie movie = new Movie();
+//        movie.setRated("rated").setReleased("released").setRuntime("runtime").setTitle("Titutlo").setYear("2000");
         Gson gson = new Gson();
-        ArrayList<Movie> movies = new ArrayList<Movie>();
-        movies.add(movie);
-        movies.add(movie);
+//        ArrayList<Movie> movies = new ArrayList<Movie>();
+//        movies.add(movie);
+//        movies.add(movie);
         FileReader fileReader = new FileReader();
-        String file = fileReader.read("/home/leo/workspace/PODTpe/concurrentJson/resources/imdb-200.json");
-        System.out.println(file);
-        List<Movie> m = gson.fromJson(file,List.class);
-        System.out.println(gson.toJson(movies));
+        String file = fileReader.read(data.path);
+//        System.out.println(file);
+        Type movieListType = new TypeToken<List<Movie>>(){}.getType();
+        List<Movie> m = gson.fromJson(file,movieListType);
+        m.forEach(mov -> {System.out.println(mov.toString());});
+//        System.out.println(gson.toJson(movies));
     }
 
     private static QueryData parseArgs(String[] args) {
