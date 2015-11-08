@@ -1,6 +1,14 @@
 package com.hufflepuff.domain;
 
-public class Movie {
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
+import com.hazelcast.nio.serialization.DataSerializable;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Movie implements DataSerializable {
 
 	String Title;
 	String Year;
@@ -240,6 +248,29 @@ public class Movie {
 	public void setResponse(String response) {
 		Response = response;
 	}
+
+
+	private List<String> actorsAsList;
+
+	public List<String> getActorsAsList() {
+		if(actorsAsList == null) {
+			actorsAsList = new ArrayList<>();
+			for (String actor : getActors().trim().split(",")) {
+				actorsAsList.add(actor);
+			}
+		}
+		return actorsAsList;
+	}
+
+	public long getImdbVotesAsLong() {
+		try {
+			return Long.parseLong(getImdbVotes().replace(",", ""));
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+
+
 	@Override
 	public String toString() {
 		return "Movie [Title=" + Title + ", Year=" + Year + ", Rated=" + Rated
@@ -260,8 +291,17 @@ public class Movie {
 				+ ", BoxOffice=" + BoxOffice + ", Production=" + Production
 				+ ", Website=" + Website + ", Response=" + Response + "]";
 	}
-	
-	
+
+
+	@Override
+	public void writeData(ObjectDataOutput out) throws IOException {
+
+	}
+
+	@Override
+	public void readData(ObjectDataInput in) throws IOException {
+
+	}
 }
 
 

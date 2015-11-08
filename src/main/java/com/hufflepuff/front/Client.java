@@ -1,9 +1,13 @@
 package com.hufflepuff.front;
 
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
@@ -13,6 +17,7 @@ import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.Job;
 import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
+import com.hufflepuff.FileReader;
 import com.hufflepuff.domain.Movie;
 
 public class Client {
@@ -23,6 +28,8 @@ public class Client {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException 
 	{
+		QueryData data = parseArgs(args);
+
 		/*Conection Configuraciont*/
 		String name= System.getProperty("name");
 		String pass= System.getProperty("pass");
@@ -30,8 +37,10 @@ public class Client {
 		{
 			pass="dev-pass";
 		}
+		name = "hufflepuff";
+		pass="dev-pass";
 		System.out.println(String.format("Connecting with cluster dev-name [%s]", name));
- 
+
 		ClientConfig ccfg= new ClientConfig();
 		ccfg.getGroupConfig().setName(name).setPassword(pass);
 		
@@ -53,16 +62,16 @@ public class Client {
 	 		
 //ARREGLAR ESTO
 	 
-	    // Preparar la particion de datos y distribuirla en el cluster a trav�s del IMap
-//		IMap<String, Movie> myMap = client.getMap(MAP_NAME);
-//		try 
-//		{
-//			MovieReader.readMovies(myMap);
-//		} 
-//		catch (Exception e) 
-//		{
-//			throw new RuntimeException(e);
-//		}
+//	     Preparar la particion de datos y distribuirla en el cluster a trav�s del IMap
+		IMap<String, Movie> myMap = client.getMap(MAP_NAME);
+		try
+		{
+			MovieReader.readMovies(myMap, data.path);
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 //
 //	    
 //	 	// Ahora el JobTracker y los Workers!
@@ -90,5 +99,36 @@ public class Client {
 //	    
 //	    System.exit(0);
 
+	}
+
+	private static QueryData parseArgs(String[] args) {
+		int n = -1;
+		int tope = -1;
+		String path = null;
+		for(String arg: args) {
+			String[] argSplitted = arg.split("=");
+			String argName = argSplitted[0].toLowerCase();
+			String argValue = argSplitted[1];
+			if(argName.equals("n")) {
+				n = Integer.parseInt(argValue);
+			} else if(argName.equals("tope")) {
+				tope = Integer.parseInt(argValue);
+			} else if(argName.equals("path")) {
+				path = argValue;
+			}
+		}
+		return new QueryData(n, tope, path);
+	}
+
+	private static class QueryData {
+		int n;
+		int tope;
+		String path;
+
+		public QueryData(int n, int tope, String path) {
+			this.n = n;
+			this.tope = tope;
+			this.path = path;
+		}
 	}
 }
