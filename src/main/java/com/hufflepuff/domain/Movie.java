@@ -295,13 +295,77 @@ public class Movie implements DataSerializable {
 
 	@Override
 	public void writeData(ObjectDataOutput out) throws IOException {
-
+		out.writeUTF(Title);
+		out.writeUTF(Year);
+		out.writeUTF(Rated);
+		out.writeUTF(Released);
+		out.writeUTF(Runtime);
+		out.writeUTF(Genre);
+		out.writeUTF(Director);
+		out.writeUTF(Writer);
+		out.writeUTF(Actors);
+		out.writeUTF(Plot);
+		out.writeUTF(Language);
+		out.writeUTF(Country);
+		out.writeUTF(Awards);
+		out.writeUTF(Poster);
+		out.writeUTF(Metascore);
+		out.writeUTF(imdbRating);
+		out.writeUTF(imdbVotes);
+		out.writeUTF(imdbID);
+		out.writeUTF(Type);
+		out.writeUTF(tomatoMeter);
+		out.writeUTF(tomatoImage);
+		out.writeUTF(tomatoRating);
+		out.writeUTF(tomatoReviews);
+		out.writeUTF(tomatoFresh);
+		out.writeUTF(tomatoRotten);
+		out.writeUTF(tomatoConsensus);
+		out.writeUTF(tomatoUserMeter);
+		out.writeUTF(tomatoUserRating);
+		out.writeUTF(tomatoUserReviews);
+		out.writeUTF(DVD);
+		out.writeUTF(BoxOffice);
+		out.writeUTF(Production);
+		out.writeUTF(Website);
+		out.writeUTF(Response);
 	}
 
 	@Override
 	public void readData(ObjectDataInput in) throws IOException {
-
+		Title = in.readUTF();
+		Year = in.readUTF();
+		Rated = in.readUTF();
+		Released = in.readUTF();
+		Runtime = in.readUTF();
+		Genre = in.readUTF();
+		Director = in.readUTF();
+		Writer = in.readUTF();
+		Actors = in.readUTF();
+		Plot = in.readUTF();
+		Language = in.readUTF();
+		Country = in.readUTF();
+		Awards = in.readUTF();
+		Poster = in.readUTF();
+		Metascore = in.readUTF();
+		imdbRating = in.readUTF();
+		imdbVotes = in.readUTF();
+		imdbID = in.readUTF();
+		Type = in.readUTF();
+		tomatoMeter = in.readUTF();
+		tomatoImage = in.readUTF();
+		tomatoRating = in.readUTF();
+		tomatoReviews = in.readUTF();
+		tomatoFresh = in.readUTF();
+		tomatoRotten = in.readUTF();
+		tomatoConsensus = in.readUTF();
+		tomatoUserMeter = in.readUTF();
+		tomatoUserRating = in.readUTF();
+		tomatoUserReviews = in.readUTF();
+		DVD = in.readUTF();
+		BoxOffice = in.readUTF();
+		Production = in.readUTF();
+		Website = in.readUTF();
+		Response = in.readUTF();
 	}
 }
-
-
