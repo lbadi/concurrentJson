@@ -15,10 +15,7 @@ import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.*;
 import com.hufflepuff.FileReader;
-import com.hufflepuff.back.MapperQ1;
-import com.hufflepuff.back.MapperQ2;
-import com.hufflepuff.back.ReducerQ1;
-import com.hufflepuff.back.ReducerQ2;
+import com.hufflepuff.back.*;
 import com.hufflepuff.domain.Movie;
 import com.hufflepuff.util.Timestamper;
 
@@ -28,8 +25,9 @@ public class Client {
 
 	private static final int QUERY_1 = 1;
 	private static final int QUERY_2 = 2;
+    private static final int QUERY_4 = 4;
 
-	public static void main(String[] args) throws InterruptedException, ExecutionException 
+	public static void main(String[] args) throws InterruptedException, ExecutionException
 	{
 		QueryData data = parseArgs(args);
 
@@ -110,27 +108,56 @@ public class Client {
 				break;
 			}
 			case QUERY_2: {
-				// Orquestacion de Jobs y lanzamiento
-				System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
-				ICompletableFuture<Map<Integer , Movie>> future = job
-						.mapper(new MapperQ2())
-						.reducer(new ReducerQ2())
-						.submit();
+                // Orquestacion de Jobs y lanzamiento
+                System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
+                ICompletableFuture<Map<Integer , List<Movie>>> future = job
+                        .mapper(new MapperQ2(data.tope))
+                        .reducer(new ReducerQ2())
+                        .submit();
 
-				// Tomar resultado e Imprimirlo
-				Map<Integer, Movie> rta = future.get();
+                // Tomar resultado e Imprimirlo
+                Map<Integer, List<Movie>> rta = future.get();
 
 //				VotesComparator votesComparator = new VotesComparator(rta);
 //				TreeMap<Integer, Long> sortedMap = new TreeMap<>(votesComparator);
 //				sortedMap.putAll(rta);
 
-				for (Entry<Integer, Movie> e : rta.entrySet()) {
-					System.out.println("La mejor película del año " + e.getKey() + " es " +
-							e.getValue().getTitle() + " con un score de " + e.getValue().getMetascoreAsInteger() + ".");
-				}
-				System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
-				break;
-			}
+                for (Entry<Integer, List<Movie>> e : rta.entrySet()) {
+                    System.out.println("Las mejores películas del año " + e.getKey() + " son: ");
+                    e.getValue().forEach(movie -> {
+                        System.out.println(movie.getTitle());
+                    });
+                    System.out.println("con un score de " + e.getValue().get(0).getMetascoreAsInteger() + ".");
+                }
+                System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
+                break;
+            }
+            case QUERY_4: {
+                // Orquestacion de Jobs y lanzamiento
+                System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
+                ICompletableFuture<Map<String , List<String>>> future = job
+                        .mapper(new MapperQ4())
+                        .reducer(new ReducerQ4())
+                        .submit();
+
+                // Tomar resultado e Imprimirlo
+                Map<String, List<String>> rta = future.get();
+
+//				VotesComparator votesComparator = new VotesComparator(rta);
+//				TreeMap<Integer, Long> sortedMap = new TreeMap<>(votesComparator);
+//				sortedMap.putAll(rta);
+
+                for (Entry<String, List<String>> e : rta.entrySet()) {
+
+                    System.out.println("Los favoritos del director " + e.getKey() + " son:");
+                    e.getValue().forEach(actor -> {
+                        System.out.println(actor);
+                    });
+                    System.out.println("\n");
+                }
+                System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
+                break;
+            }
 		}
 	    System.exit(0);
 

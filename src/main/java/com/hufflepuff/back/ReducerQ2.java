@@ -5,32 +5,40 @@ import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
 import com.hufflepuff.domain.Movie;
 
-public class ReducerQ2 implements ReducerFactory<Integer, Movie, Movie> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReducerQ2 implements ReducerFactory<Integer, Movie, List<Movie>> {
 
     @Override
-    public Reducer<Movie, Movie> newReducer(Integer actor) {
-        return new Reducer<Movie, Movie>() {
+    public Reducer<Movie, List<Movie>> newReducer(Integer actor) {
+        return new Reducer<Movie, List<Movie>>() {
 
-            private Movie best;
+            private List<Movie> best;
+            private int bestInt;
 
             @Override
             public void beginReduce() {
-                best = null;
+                best = new ArrayList<>();
+                bestInt = -1;
             }
 
             @Override
             public void reduce(Movie movie) {
-                if(best != null) {
-                    if(movie.getMetascoreAsInteger() > best.getMetascoreAsInteger()) {
-                        best = movie;
-                    }
+                int movieScore = movie.getMetascoreAsInteger();
+                if(movieScore < bestInt) {
+                    return;
+                } else if(movieScore > bestInt) {
+                    bestInt = movieScore;
+                    best = new ArrayList<>();
+                    best.add(movie);
                 } else {
-                    best = movie;
+                    best.add(movie);
                 }
             }
 
             @Override
-            public Movie finalizeReduce() {
+            public List<Movie> finalizeReduce() {
                 return best;
             }
         };

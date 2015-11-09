@@ -255,8 +255,10 @@ public class Movie implements DataSerializable {
 	public List<String> getActorsAsList() {
 		if(actorsAsList == null) {
 			actorsAsList = new ArrayList<>();
-			for (String actor : getActors().replaceAll("\\s","").split(",")) {
-				actorsAsList.add(actor);
+			String actors = getActors();
+			String[] actorsArray = getActors().split(",");
+			for (String actor : actorsArray) {
+				actorsAsList.add(actor.trim());
 			}
 		}
 		return actorsAsList;
