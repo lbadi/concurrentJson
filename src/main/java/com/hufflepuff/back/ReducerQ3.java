@@ -1,31 +1,50 @@
 package com.hufflepuff.back;
 
 
-import java.util.List;
+import java.util.*;
 
 import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
+import com.hufflepuff.domain.Partners;
 
-public class ReducerQ3 implements ReducerFactory<String, List<String>, Long> {
+
+public class ReducerQ3 implements ReducerFactory<String, List<String>, List<Partners>> {
 
     @Override
-    public Reducer<Long, Long> newReducer(String actor) {
-        return new Reducer<Long, Long>() {
+    public Reducer<List<String>, List<Partners>> newReducer(String actor) {
 
-            private long totalVotes;
+        return new Reducer<List<String>, List<Partners>>() {
+
+            private Map<String, Partners> partners;
 
             @Override
             public void beginReduce() {
-                totalVotes = 0;
+                partners = new HashMap<>();
             }
 
             @Override
-            public void reduce(Long votes) {
-                totalVotes += votes;
+            public void reduce(List<String> strings) {
+                for(String s: strings) {
+                    if(partners.containsKey(s)) {
+                        partners.get(s).incAppearances();
+                    } else {
+                        partners.put(s, new Partners(actor, s));
+                    }
+                }
             }
 
             @Override
-            public Long finalizeReduce() {
+            public List<Partners> finalizeReduce() {
+                TreeSet<Partners> partnersSet = new TreeSet<Partners>(new Comparator<Partners>() {
+                    @Override
+                    public int compare(Partners o1, Partners o2) {
+                        return Long.compare(o1.getAppearances(), o2.getAppearances());
+                    }
+                });
+                partnersSet.addAll(partners.values());
+                for(Partners p: partners.values()) {
+
+                }git 
                 return totalVotes;
             }
         };
