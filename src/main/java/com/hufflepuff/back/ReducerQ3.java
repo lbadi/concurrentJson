@@ -1,10 +1,12 @@
 package com.hufflepuff.back;
 
 
+import java.util.List;
+
 import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
 
-public class ReducerQ3 implements ReducerFactory<String, Long, Long> {
+public class ReducerQ3 implements ReducerFactory<String, List<String>, Long> {
 
     @Override
     public Reducer<Long, Long> newReducer(String actor) {

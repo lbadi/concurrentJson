@@ -14,10 +14,6 @@ public class MapperQ3 implements Mapper<String, Movie, String, List<String>> {
     public void map(String keyInput, Movie valueInput, Context<String, List<String>> context) {
         System.out.println("key input: " + keyInput + " value input: " + valueInput);
 
-        if(!valueInput.getType().equals("movie")) {
-            return;
-        }
-
         List<String> actors = valueInput.getActorsAsList();
         for(String actor: actors) {
             List<String> partners = new ArrayList<>();

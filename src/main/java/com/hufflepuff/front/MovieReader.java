@@ -25,7 +25,9 @@ public class MovieReader {
         Type movieListType = new TypeToken<List<Movie>>(){}.getType();
         List<Movie> movieList = gson.fromJson(file,movieListType);
         movieList.forEach(movie -> {
-            movieMap.set(movie.getImdbID(), movie);
+        	if(movie.getType().equals("movie")){
+        		movieMap.set(movie.getImdbID(), movie);
+        	}
         });
     }
 
