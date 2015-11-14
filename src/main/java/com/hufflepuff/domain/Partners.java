@@ -5,24 +5,33 @@ import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.DataSerializable;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Partners implements DataSerializable {
 
 	String actor1;
 	String actor2;
 	int appearances;
+	Set<String> movies;
 
-	public Partners(String actor1, String actor2) {
+	public Partners() {
+
+	}
+
+	public Partners(String actor1, String actor2, Movie movie) {
 		this.actor1 = actor1;
 		this.actor2 = actor2;
 		appearances = 1;
+		movies = new HashSet<>();
+		movies.add(movie.getTitle());
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((actor1 == null) ? 0 : actor1.hashCode());
+		result = prime * result + ((actor1 == null) || (actor2 == null) ? 0 : actor1.hashCode() * actor2.hashCode());
 		return result;
 	}
 
@@ -44,8 +53,9 @@ public class Partners implements DataSerializable {
 		return false;
 	}
 
-	public void incAppearances() {
+	public void incAppearances(Movie movie) {
 		appearances++;
+		movies.add(movie.getTitle());
 	}
 
 	public int getAppearances() {
@@ -58,6 +68,10 @@ public class Partners implements DataSerializable {
 
 	public String getActor2() {
 		return actor2;
+	}
+
+	public Set<String> getMovies() {
+		return movies;
 	}
 
 	public void setActor1(String actor1) {
@@ -77,6 +91,7 @@ public class Partners implements DataSerializable {
 		out.writeUTF(actor1);
 		out.writeUTF(actor2);
 		out.writeUTF(String.valueOf(appearances));
+		out.writeObject(movies);
 	}
 
 	@Override
@@ -84,5 +99,6 @@ public class Partners implements DataSerializable {
 		actor1 = in.readUTF();
 		actor2 = in.readUTF();
 		appearances = Integer.valueOf(in.readUTF());
+		movies = in.readObject();
 	}
 }

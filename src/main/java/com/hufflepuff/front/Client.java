@@ -137,27 +137,25 @@ public class Client {
 			case QUERY_3: {
 				// Orquestacion de Jobs y lanzamiento
 				System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
-				ICompletableFuture<Map<String, List<Partners>>> future = job
+				ICompletableFuture<List<Partners>> future = job
 						.mapper(new MapperQ3())
 						.reducer(new ReducerQ3())
-						.submit();
+						.submit(new CollatorQ3());
 
 				// Tomar resultado e Imprimirlo
-				Map<String, List<Partners>> rta = future.get();
+				List<Partners> rta = future.get();
 
 //				VotesComparator votesComparator = new VotesComparator(rta);
 //				TreeMap<Integer, Long> sortedMap = new TreeMap<>(votesComparator);
 //				sortedMap.putAll(rta);
 
-				Set<Partners> partners = new HashSet<>();
-				for (Entry<String, List<Partners>> e : rta.entrySet()) {
-					for(Partners p: e.getValue()) {
-						partners.add(p);
+				for(Partners p: rta) {
+					System.out.print("Los actores " + p.getActor1() + " y " + p.getActor2() + " actuaron " +
+					p.getAppearances() + " veces juntos en ");
+					for(String movie: p.getMovies()) {
+						System.out.print(movie + ", ");
 					}
-				}
-				for(Partners p: partners) {
-					System.out.println("Los actores " + p.getActor1() + " y " + p.getActor2() + " actuaron " +
-					p.getAppearances() + " veces juntos.");
+					System.out.println();
 				}
 
 				System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
