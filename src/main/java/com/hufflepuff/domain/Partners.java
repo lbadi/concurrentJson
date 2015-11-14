@@ -1,10 +1,16 @@
 package com.hufflepuff.domain;
 
-public class Partners implements Comparable<Partners> {
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
+import com.hazelcast.nio.serialization.DataSerializable;
+
+import java.io.IOException;
+
+public class Partners implements DataSerializable {
 
 	String actor1;
 	String actor2;
-	long appearances;
+	int appearances;
 
 	public Partners(String actor1, String actor2) {
 		this.actor1 = actor1;
@@ -42,7 +48,41 @@ public class Partners implements Comparable<Partners> {
 		appearances++;
 	}
 
-	public long getAppearances() {
+	public int getAppearances() {
 		return appearances;
+	}
+
+	public String getActor1() {
+		return actor1;
+	}
+
+	public String getActor2() {
+		return actor2;
+	}
+
+	public void setActor1(String actor1) {
+		this.actor1 = actor1;
+	}
+
+	public void setActor2(String actor2) {
+		this.actor2 = actor2;
+	}
+
+	public void setAppearances(int appearances) {
+		this.appearances = appearances;
+	}
+
+	@Override
+	public void writeData(ObjectDataOutput out) throws IOException {
+		out.writeUTF(actor1);
+		out.writeUTF(actor2);
+		out.writeUTF(String.valueOf(appearances));
+	}
+
+	@Override
+	public void readData(ObjectDataInput in) throws IOException {
+		actor1 = in.readUTF();
+		actor2 = in.readUTF();
+		appearances = Integer.valueOf(in.readUTF());
 	}
 }

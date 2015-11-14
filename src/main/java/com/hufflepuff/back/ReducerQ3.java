@@ -35,17 +35,24 @@ public class ReducerQ3 implements ReducerFactory<String, List<String>, List<Part
 
             @Override
             public List<Partners> finalizeReduce() {
-                TreeSet<Partners> partnersSet = new TreeSet<Partners>(new Comparator<Partners>() {
-                    @Override
-                    public int compare(Partners o1, Partners o2) {
-                        return Long.compare(o1.getAppearances(), o2.getAppearances());
-                    }
+                TreeSet<Partners> partnersSet = new TreeSet<>((p1, p2) -> {
+                    return Long.compare(p1.getAppearances(), p2.getAppearances());
                 });
                 partnersSet.addAll(partners.values());
-                for(Partners p: partners.values()) {
-
-                }git 
-                return totalVotes;
+                int max = 0;
+                List<Partners> result = new ArrayList<>();
+                for(Partners p: partnersSet.descendingSet()) {
+                    int appearances = p.getAppearances();
+                    if( appearances > max) {
+                        max = appearances;
+                        result.add(p);
+                    } else if(appearances == max) {
+                        result.add(p);
+                    } else {
+                        break;
+                    }
+                }
+                return result;
             }
         };
     }

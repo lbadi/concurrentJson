@@ -17,6 +17,7 @@ import com.hazelcast.mapreduce.*;
 import com.hufflepuff.FileReader;
 import com.hufflepuff.back.*;
 import com.hufflepuff.domain.Movie;
+import com.hufflepuff.domain.Partners;
 import com.hufflepuff.util.Timestamper;
 
 public class Client {
@@ -25,6 +26,7 @@ public class Client {
 
 	private static final int QUERY_1 = 1;
 	private static final int QUERY_2 = 2;
+	private static final int QUERY_3 = 3;
     private static final int QUERY_4 = 4;
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException
@@ -132,6 +134,35 @@ public class Client {
                 System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
                 break;
             }
+			case QUERY_3: {
+				// Orquestacion de Jobs y lanzamiento
+				System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
+				ICompletableFuture<Map<String, List<Partners>>> future = job
+						.mapper(new MapperQ3())
+						.reducer(new ReducerQ3())
+						.submit();
+
+				// Tomar resultado e Imprimirlo
+				Map<String, List<Partners>> rta = future.get();
+
+//				VotesComparator votesComparator = new VotesComparator(rta);
+//				TreeMap<Integer, Long> sortedMap = new TreeMap<>(votesComparator);
+//				sortedMap.putAll(rta);
+
+				Set<Partners> partners = new HashSet<>();
+				for (Entry<String, List<Partners>> e : rta.entrySet()) {
+					for(Partners p: e.getValue()) {
+						partners.add(p);
+					}
+				}
+				for(Partners p: partners) {
+					System.out.println("Los actores " + p.getActor1() + " y " + p.getActor2() + " actuaron " +
+					p.getAppearances() + " veces juntos.");
+				}
+
+				System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
+				break;
+			}
             case QUERY_4: {
                 // Orquestacion de Jobs y lanzamiento
                 System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
