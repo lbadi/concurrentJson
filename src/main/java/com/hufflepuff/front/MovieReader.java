@@ -13,7 +13,9 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MovieReader {
@@ -29,7 +31,7 @@ public class MovieReader {
             List<Movie> movies = gson.fromJson(reader, movieListType);
             movies.forEach(movie -> {
                 if (movie.getType().equals("movie")) {
-                    movieMap.set(movie.getImdbID(), movie);
+                    movieMap.putAsync(movie.getImdbID(), movie);
                 }
             });
             System.out.println("Fin de lectura del archivo. " + Timestamper.getTime());
