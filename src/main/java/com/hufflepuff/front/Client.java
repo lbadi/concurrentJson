@@ -1,12 +1,9 @@
 package com.hufflepuff.front;
 
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
@@ -14,7 +11,6 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.*;
-import com.hufflepuff.FileReader;
 import com.hufflepuff.back.*;
 import com.hufflepuff.domain.Movie;
 import com.hufflepuff.domain.Partners;
@@ -84,130 +80,86 @@ public class Client {
 	    KeyValueSource<String, Movie> source = KeyValueSource.fromMap(myMap);
 	    Job<String, Movie> job = tracker.newJob(source);
 
+		System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
 		switch (data.query) {
 			case QUERY_1: {
 				// Orquestacion de Jobs y lanzamiento
-				System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
-				ICompletableFuture<Map<String, Long>> future = job
+				ICompletableFuture<List<String>> future = job
 						.mapper(new MapperQ1())
 						.reducer(new ReducerQ1())
-						.submit();
-
+						.submit(new CollatorQ1(data.n));
 				// Tomar resultado e Imprimirlo
-				Map<String, Long> rta = future.get();
-
-				VotesComparator votesComparator = new VotesComparator(rta);
-				TreeMap<String, Long> sortedMap = new TreeMap<>(votesComparator);
-				sortedMap.putAll(rta);
-
-				int count = 0;
-				for (Entry<String, Long> e : sortedMap.entrySet()) {
-					if (count++ == data.n)
-						break;
-					System.out.println("El actor " + e.getKey() + " tiene " + e.getValue() + " votos.");
+				List<String> actors = future.get();
+				System.out.println("Los actores más populares son:");
+				for (String actor : actors) {
+					System.out.println(actor);
 				}
-				System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
 				break;
 			}
 			case QUERY_2: {
                 // Orquestacion de Jobs y lanzamiento
-                System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
                 ICompletableFuture<Map<Integer , List<Movie>>> future = job
                         .mapper(new MapperQ2(data.tope))
                         .reducer(new ReducerQ2())
                         .submit();
-
                 // Tomar resultado e Imprimirlo
                 Map<Integer, List<Movie>> rta = future.get();
-
-//				VotesComparator votesComparator = new VotesComparator(rta);
-//				TreeMap<Integer, Long> sortedMap = new TreeMap<>(votesComparator);
-//				sortedMap.putAll(rta);
-
                 for (Entry<Integer, List<Movie>> e : rta.entrySet()) {
-                    System.out.println("Las mejores películas del año " + e.getKey() + " son: ");
+                    System.out.println("Las mejores películas del año " + e.getKey() + " (con un score de " + e.getValue().get(0).getMetascoreAsInteger() + ") son:");
                     e.getValue().forEach(movie -> {
-                        System.out.println(movie.getTitle());
-                    });
-                    System.out.println("con un score de " + e.getValue().get(0).getMetascoreAsInteger() + ".");
+						System.out.println(movie.getTitle());
+					});
+					System.out.println("\n");
                 }
-                System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
                 break;
             }
 			case QUERY_3: {
 				// Orquestacion de Jobs y lanzamiento
-				System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
 				ICompletableFuture<List<Partners>> future = job
 						.mapper(new MapperQ3())
 						.reducer(new ReducerQ3())
 						.submit(new CollatorQ3());
-
 				// Tomar resultado e Imprimirlo
 				List<Partners> rta = future.get();
-
-//				VotesComparator votesComparator = new VotesComparator(rta);
-//				TreeMap<Integer, Long> sortedMap = new TreeMap<>(votesComparator);
-//				sortedMap.putAll(rta);
-
 				for(Partners p: rta) {
 					System.out.print("Los actores " + p.getActor1() + " y " + p.getActor2() + " actuaron " +
-					p.getAppearances() + " veces juntos en ");
-					for(String movie: p.getMovies()) {
-						System.out.print(movie + ", ");
+					p.getAppearances() + " veces juntos (");
+					Set<String> movies = p.getMovies();
+					Iterator<String> iterator = movies.iterator();
+					for(int i = 0; i < movies.size(); i ++) {
+						if(i < movies.size() - 2) {
+							System.out.print(iterator.next() + ", ");
+						} else if(i == movies.size() - 2) {
+							System.out.print(iterator.next() + " y ");
+						} else {
+							System.out.print(iterator.next() + ").");
+						}
 					}
 					System.out.println();
 				}
-
-				System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
 				break;
 			}
             case QUERY_4: {
                 // Orquestacion de Jobs y lanzamiento
-                System.out.println("Inicio del trabajo map/reduce. " + Timestamper.getTime());
                 ICompletableFuture<Map<String , List<String>>> future = job
                         .mapper(new MapperQ4())
                         .reducer(new ReducerQ4())
                         .submit();
-
                 // Tomar resultado e Imprimirlo
                 Map<String, List<String>> rta = future.get();
-
-//				VotesComparator votesComparator = new VotesComparator(rta);
-//				TreeMap<Integer, Long> sortedMap = new TreeMap<>(votesComparator);
-//				sortedMap.putAll(rta);
-
                 for (Entry<String, List<String>> e : rta.entrySet()) {
-
                     System.out.println("Los favoritos del director " + e.getKey() + " son:");
                     e.getValue().forEach(actor -> {
                         System.out.println(actor);
                     });
                     System.out.println("\n");
                 }
-                System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
                 break;
             }
 		}
-	    System.exit(0);
+		System.out.println("Fin del trabajo map/reduce. " + Timestamper.getTime());
+		System.exit(0);
 
-	}
-
-	private static class VotesComparator implements Comparator<String> {
-
-		private Map<String, Long> map;
-
-		public VotesComparator(Map<String, Long> map) {
-			this.map = map;
-		}
-
-		@Override
-		public int compare(String k1, String k2) {
-			if (map.get(k1) >= map.get(k2)) {
-				return -1;
-			} else {
-				return 1;
-			} // returning 0 would merge keys
-		}
 	}
 
 	private static QueryData parseArgs(String[] args) {
