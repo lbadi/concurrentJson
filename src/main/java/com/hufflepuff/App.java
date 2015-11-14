@@ -1,11 +1,13 @@
 package com.hufflepuff;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.hufflepuff.domain.Movie;
 
 /**
@@ -23,12 +25,25 @@ public class App
 //        ArrayList<Movie> movies = new ArrayList<Movie>();
 //        movies.add(movie);
 //        movies.add(movie);
+        
         FileReader fileReader = new FileReader();
         String file = fileReader.read(data.path);
 //        System.out.println(file);
         Type movieListType = new TypeToken<List<Movie>>(){}.getType();
         List<Movie> m = gson.fromJson(file,movieListType);
         m.forEach(mov -> {System.out.println(mov.toString());});
+        
+        /*
+         * 
+         */
+        JsonReader reader;
+		try {
+			reader = new JsonReader(new java.io.FileReader(data.path));
+			List<Movie> movies = gson.fromJson(reader, movieListType);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        
 //        System.out.println(gson.toJson(movies));
     }
 
