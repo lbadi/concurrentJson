@@ -63,6 +63,7 @@ public class Client {
 	 
 //	     Preparar la particion de datos y distribuirla en el cluster a trav�s del IMap
 		IMap<String, Movie> myMap = client.getMap(MAP_NAME);
+		myMap.clear();
 		try
 		{
 			MovieReader.readMovies(myMap, data.path);
@@ -104,6 +105,7 @@ public class Client {
                         .submit();
                 // Tomar resultado e Imprimirlo
                 Map<Integer, List<Movie>> rta = future.get();
+
                 for (Entry<Integer, List<Movie>> e : rta.entrySet()) {
                     System.out.println("Las mejores películas del año " + e.getKey() + " (con un score de " + e.getValue().get(0).getMetascoreAsInteger() + ") son:");
                     e.getValue().forEach(movie -> {

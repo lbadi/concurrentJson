@@ -26,7 +26,7 @@ public class CollatorQ1 implements Collator<Map.Entry<String, Long>, List<String
         int count = 0;
         for(ActorVotes av: sortedActors) {
             if(count++ < n) {
-                ans.add(av.actor);
+                ans.add(av.actor + " con " + av.votes + " votos.");
             }
         }
 
