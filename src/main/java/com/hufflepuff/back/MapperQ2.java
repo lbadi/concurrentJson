@@ -15,7 +15,6 @@ public class MapperQ2 implements Mapper<String, Movie, Integer, Movie> {
 
     @Override
     public void map(String keyInput, Movie valueInput, Context<Integer, Movie> context) {
-        System.out.println("key input: " + keyInput + " value input: " + valueInput);
         int year = valueInput.getYearAsInteger();
         if(year > tope) {
             context.emit(year, valueInput);
