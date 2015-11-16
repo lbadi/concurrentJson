@@ -1,0 +1,91 @@
+Inicio de la lectura del archivo. 16/11/2015 16:13:17
+Fin de lectura del archivo. 16/11/2015 16:13:19
+Inicio del trabajo map/reduce. 16/11/2015 16:13:19
+Las mejores películas del año 2016 (con un score de 0) son:
+The Nargun and the Stars
+The Eyes of March
+The Cops
+Mark of the Wolf
+Hot Summer Nights
+Fridgeport
+Circle the Wagons
+The HookUP
+Warped!
+Tierras Mexicanas
+Rogues in Robes
+Untitled Woody Allen Project
+Sanadamaru
+Marbles
+Against the Day
+Black Taj
+Lost Girls
+Crossing the Rubicon: The Journey
+Loose Screws
+Dreamed Vengeance
+2020
+The Surf Report
+Cassandra's Castle Movie
+Dog and the Dead Guy
+
+
+Las mejores películas del año 2017 (con un score de 0) son:
+Immigrant Priest
+Programmed
+Big Little Lies
+Polo
+Napa
+
+
+Las mejores películas del año 2018 (con un score de 0) son:
+Traffic U.S.A.
+
+
+Las mejores películas del año 2019 (con un score de 0) son:
+Hello Kitty
+
+
+Las mejores películas del año 2006 (con un score de 91) son:
+The Queen
+
+
+Las mejores películas del año 2007 (con un score de 91) son:
+No Country for Old Men
+
+
+Las mejores películas del año 2008 (con un score de 92) son:
+The Class
+
+
+Las mejores películas del año 2009 (con un score de 83) son:
+Star Trek
+Crazy Heart
+In the Loop
+Up in the Air
+
+
+Las mejores películas del año 2010 (con un score de 95) son:
+The Social Network
+
+
+Las mejores películas del año 2011 (con un score de 87) son:
+Harry Potter and the Deathly Hallows: Part 2
+Elena
+
+
+Las mejores películas del año 2012 (con un score de 95) son:
+Zero Dark Thirty
+
+
+Las mejores películas del año 2013 (con un score de 96) son:
+Gravity
+
+
+Las mejores películas del año 2014 (con un score de 92) son:
+Leviathan
+
+
+Las mejores películas del año 2015 (con un score de 94) son:
+Inside Out
+
+
+Fin del trabajo map/reduce. 16/11/2015 16:13:21

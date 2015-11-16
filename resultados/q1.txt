@@ -1,0 +1,15 @@
+Inicio de la lectura del archivo. 16/11/2015 16:11:10
+Fin de lectura del archivo. 16/11/2015 16:11:12
+Inicio del trabajo map/reduce. 16/11/2015 16:11:12
+Los actores más populares son:
+Robert Downey Jr. con 2924308 votos.
+Helena Bonham Carter con 2597669 votos.
+Tom Cruise con 2546504 votos.
+Robert De Niro con 2463459 votos.
+Brad Pitt con 2419846 votos.
+Leonardo DiCaprio con 2339875 votos.
+Edward Norton con 2253471 votos.
+Julianne Moore con 2233790 votos.
+Bruce Willis con 2212344 votos.
+Sean Astin con 2107343 votos.
+Fin del trabajo map/reduce. 16/11/2015 16:11:19

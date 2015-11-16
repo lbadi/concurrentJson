@@ -1,0 +1,5 @@
+Inicio de la lectura del archivo. 16/11/2015 16:16:03
+Fin de lectura del archivo. 16/11/2015 16:16:05
+Inicio del trabajo map/reduce. 16/11/2015 16:16:05
+Los actores Michael Barkann y Bill Macatee actuaron 15 veces juntos (The 2001 French Open Championships, The 1997 US Open Tennis Championships, The 2003 US Open Tennis Championships, The 1998 US Open Tennis Championships, The 1996 French Open Championships, The 2000 US Open Tennis Championships, The 1998 French Open Championships, US Open 1996, The 1994 US Open Tennis Championships, The 1997 French Open Championships, The 1995 French Open Championships, The 1999 French Open Championships, The 2000 French Open Championships, The 1999 US Open Tennis Championships y The 2004 US Open Tennis Championships).
+Fin del trabajo map/reduce. 16/11/2015 16:16:15
